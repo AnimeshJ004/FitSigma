@@ -31,12 +31,28 @@ RUN mkdir -p storage/framework/sessions \
              storage/framework/cache/data \
              storage/logs \
              bootstrap/cache \
-    && chmod -R 777 storage bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html
+    && chmod -R 777 storage bootstrap/cache
 
-# Generate app key
-RUN cp .env.example .env && php artisan key:generate --force
+# Create startup script that builds .env from Railway environment variables at runtime
+RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'cp .env.example .env' >> /start.sh && \
+    echo 'sed -i "s|APP_KEY=.*|APP_KEY=${APP_KEY}|" .env' >> /start.sh && \
+    echo 'sed -i "s|APP_URL=.*|APP_URL=${APP_URL}|" .env' >> /start.sh && \
+    echo 'sed -i "s|APP_ENV=.*|APP_ENV=${APP_ENV:-production}|" .env' >> /start.sh && \
+    echo 'sed -i "s|APP_DEBUG=.*|APP_DEBUG=${APP_DEBUG:-false}|" .env' >> /start.sh && \
+    echo 'sed -i "s|DB_HOST=.*|DB_HOST=${DB_HOST}|" .env' >> /start.sh && \
+    echo 'sed -i "s|DB_PORT=.*|DB_PORT=${DB_PORT:-3306}|" .env' >> /start.sh && \
+    echo 'sed -i "s|DB_DATABASE=.*|DB_DATABASE=${DB_DATABASE}|" .env' >> /start.sh && \
+    echo 'sed -i "s|DB_USERNAME=.*|DB_USERNAME=${DB_USERNAME}|" .env' >> /start.sh && \
+    echo 'sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" .env' >> /start.sh && \
+    echo 'sed -i "s|SESSION_DRIVER=.*|SESSION_DRIVER=file|" .env' >> /start.sh && \
+    echo 'sed -i "s|CACHE_DRIVER=.*|CACHE_DRIVER=array|" .env' >> /start.sh && \
+    echo 'php artisan key:generate --force 2>/dev/null || true' >> /start.sh && \
+    echo 'php artisan config:clear' >> /start.sh && \
+    echo 'php artisan migrate --force 2>/dev/null || true' >> /start.sh && \
+    echo 'php -S 0.0.0.0:${PORT:-8080} -t public' >> /start.sh && \
+    chmod +x /start.sh
 
 EXPOSE 8080
 
-CMD php -S 0.0.0.0:${PORT:-8080} -t public
+CMD ["/start.sh"]
