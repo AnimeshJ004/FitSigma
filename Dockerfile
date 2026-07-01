@@ -16,16 +16,13 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
 COPY . .
 
-# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# Create all required Laravel directories
+# Create required Laravel directories
 RUN mkdir -p storage/framework/sessions \
              storage/framework/views \
              storage/framework/cache/data \
@@ -33,25 +30,56 @@ RUN mkdir -p storage/framework/sessions \
              bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache
 
-# Create startup script that builds .env from Railway environment variables at runtime
-RUN echo '#!/bin/sh' > /start.sh && \
-    echo 'cp .env.example .env' >> /start.sh && \
-    echo 'sed -i "s|APP_KEY=.*|APP_KEY=${APP_KEY}|" .env' >> /start.sh && \
-    echo 'sed -i "s|APP_URL=.*|APP_URL=${APP_URL}|" .env' >> /start.sh && \
-    echo 'sed -i "s|APP_ENV=.*|APP_ENV=${APP_ENV:-production}|" .env' >> /start.sh && \
-    echo 'sed -i "s|APP_DEBUG=.*|APP_DEBUG=${APP_DEBUG:-false}|" .env' >> /start.sh && \
-    echo 'sed -i "s|DB_HOST=.*|DB_HOST=${DB_HOST}|" .env' >> /start.sh && \
-    echo 'sed -i "s|DB_PORT=.*|DB_PORT=${DB_PORT:-3306}|" .env' >> /start.sh && \
-    echo 'sed -i "s|DB_DATABASE=.*|DB_DATABASE=${DB_DATABASE}|" .env' >> /start.sh && \
-    echo 'sed -i "s|DB_USERNAME=.*|DB_USERNAME=${DB_USERNAME}|" .env' >> /start.sh && \
-    echo 'sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" .env' >> /start.sh && \
-    echo 'sed -i "s|SESSION_DRIVER=.*|SESSION_DRIVER=file|" .env' >> /start.sh && \
-    echo 'sed -i "s|CACHE_DRIVER=.*|CACHE_DRIVER=array|" .env' >> /start.sh && \
-    echo 'php artisan key:generate --force 2>/dev/null || true' >> /start.sh && \
-    echo 'php artisan config:clear' >> /start.sh && \
-    echo 'php artisan migrate --force 2>/dev/null || true' >> /start.sh && \
-    echo 'php -S 0.0.0.0:${PORT:-8080} -t public' >> /start.sh && \
-    chmod +x /start.sh
+# Write startup script
+RUN cat > /start.sh << 'EOF'
+#!/bin/sh
+set -e
+
+echo "=== Starting FitSigma ==="
+
+# Build .env from environment variables
+cat > /var/www/html/.env << ENVEOF
+APP_NAME=FitSigma
+APP_ENV=production
+APP_KEY=${APP_KEY}
+APP_DEBUG=true
+APP_LOG_LEVEL=debug
+APP_URL=${APP_URL:-http://localhost}
+
+DB_CONNECTION=mysql
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT:-3306}
+DB_DATABASE=${DB_DATABASE}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+
+CACHE_DRIVER=array
+SESSION_DRIVER=file
+QUEUE_DRIVER=database
+ENVEOF
+
+echo "=== .env written ==="
+cat /var/www/html/.env
+
+cd /var/www/html
+
+# Generate key if missing
+php artisan key:generate --force
+php artisan config:clear
+php artisan cache:clear
+
+echo "=== Running migrations ==="
+php artisan migrate --force || echo "Migration failed - continuing anyway"
+
+echo "=== Tailing log in background ==="
+touch storage/logs/laravel.log
+tail -f storage/logs/laravel.log &
+
+echo "=== Starting PHP server on port ${PORT:-8080} ==="
+php -S 0.0.0.0:${PORT:-8080} -t public
+EOF
+
+RUN chmod +x /start.sh
 
 EXPOSE 8080
 
