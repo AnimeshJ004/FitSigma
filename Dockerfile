@@ -25,21 +25,24 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+# Create all required Laravel directories
+RUN mkdir -p storage/framework/sessions \
+             storage/framework/views \
+             storage/framework/cache/data \
+             storage/logs \
+             bootstrap/cache \
+    && chmod -R 777 storage bootstrap/cache
+
+# Set ownership
+RUN chown -R www-data:www-data /var/www/html
 
 # Configure Apache to use public/ as document root
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
     && a2enmod rewrite
 
-# Copy .env from example
-RUN cp .env.example .env \
-    && php artisan key:generate
+# Generate app key from .env.example
+RUN cp .env.example .env && php artisan key:generate --force
 
-# Expose port (Railway injects $PORT)
 EXPOSE 80
 
-# Start Apache
 CMD ["apache2-foreground"]
