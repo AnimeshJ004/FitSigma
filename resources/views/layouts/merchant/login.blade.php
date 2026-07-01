@@ -180,7 +180,7 @@ License: You must have a valid license purchased only from themeforest(the above
         });
 
         var image_1;
-        @if(isset($gymSettings) && is_null($gymSettings))
+        @if(!isset($gymSettings) || is_null($gymSettings))
             image_1 = '{{ asset("admin/pages/img/login/bg1.jpg") }}';
         @else
             @if($gymSettings->front_image != '')
