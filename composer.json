@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.4",
+        "php": ">=5.6.4",
         "barryvdh/laravel-debugbar": "^2.1",
         "barryvdh/laravel-dompdf": "0.8.*",
         "barryvdh/laravel-ide-helper": "^2.4",
