@@ -46,12 +46,8 @@ APP_DEBUG=true
 APP_LOG_LEVEL=debug
 APP_URL=${APP_URL:-http://localhost}
 
-DB_CONNECTION=mysql
-DB_HOST=${DB_HOST}
-DB_PORT=${DB_PORT:-3306}
-DB_DATABASE=${DB_DATABASE}
-DB_USERNAME=${DB_USERNAME}
-DB_PASSWORD=${DB_PASSWORD}
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/html/database/database.sqlite
 
 CACHE_DRIVER=array
 SESSION_DRIVER=file
@@ -60,6 +56,10 @@ ENVEOF
 
 echo "=== .env written ==="
 cat /var/www/html/.env
+
+chmod 777 /var/www/html/database
+touch /var/www/html/database/database.sqlite
+chmod 777 /var/www/html/database/database.sqlite
 
 cd /var/www/html
 
@@ -70,6 +70,9 @@ php artisan cache:clear
 
 echo "=== Running migrations ==="
 php artisan migrate --force || echo "Migration failed - continuing anyway"
+
+echo "=== Running seeders ==="
+php artisan db:seed --force || echo "Seeding failed - continuing anyway"
 
 echo "=== Tailing log in background ==="
 touch storage/logs/laravel.log
