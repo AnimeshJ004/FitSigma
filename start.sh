@@ -3,36 +3,51 @@ set -e
 
 echo "=== Starting FitSigma ==="
 
-# Build .env from environment variables
-cat > /var/www/html/.env << ENVEOF
-APP_NAME=FitSigma
-APP_ENV=production
-APP_KEY=${APP_KEY}
-APP_DEBUG=true
-APP_LOG_LEVEL=debug
-APP_URL=${APP_URL:-http://localhost}
-
-DB_CONNECTION=sqlite
-DB_DATABASE=/var/www/html/database/database.sqlite
-
-CACHE_DRIVER=array
-SESSION_DRIVER=file
-QUEUE_DRIVER=database
-ENVEOF
-
-echo "=== .env written ==="
-cat /var/www/html/.env
-
-chmod 777 /var/www/html/database
-touch /var/www/html/database/database.sqlite
-chmod 777 /var/www/html/database/database.sqlite
-
 cd /var/www/html
 
-# Generate key if missing
-php artisan key:generate --force
+# Build a runtime .env only when the deployment has not provided one.
+# Do not overwrite database or app settings on every boot; that makes deploys
+# look unchanged because the app falls back to fresh seeded SQLite data.
+if [ ! -f /var/www/html/.env ]; then
+    cat > /var/www/html/.env << ENVEOF
+APP_NAME=FitSigma
+APP_ENV=${APP_ENV:-production}
+APP_KEY=${APP_KEY}
+APP_DEBUG=${APP_DEBUG:-false}
+APP_LOG_LEVEL=${APP_LOG_LEVEL:-debug}
+APP_URL=${APP_URL:-http://localhost}
+
+DB_CONNECTION=${DB_CONNECTION:-sqlite}
+DB_DATABASE=${DB_DATABASE:-/var/www/html/database/database.sqlite}
+DB_HOST=${DB_HOST:-127.0.0.1}
+DB_PORT=${DB_PORT:-3306}
+DB_USERNAME=${DB_USERNAME:-}
+DB_PASSWORD=${DB_PASSWORD:-}
+
+CACHE_DRIVER=${CACHE_DRIVER:-array}
+SESSION_DRIVER=${SESSION_DRIVER:-file}
+QUEUE_DRIVER=${QUEUE_DRIVER:-sync}
+ENVEOF
+    echo "=== .env written ==="
+else
+    echo "=== Using existing .env ==="
+fi
+
+chmod 777 /var/www/html/database || true
+
+if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
+    touch "${DB_DATABASE:-/var/www/html/database/database.sqlite}"
+    chmod 777 "${DB_DATABASE:-/var/www/html/database/database.sqlite}"
+fi
+
 php artisan config:clear
 php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+
+if ! grep -q '^APP_KEY=base64:' /var/www/html/.env; then
+    php artisan key:generate --force
+fi
 
 echo "=== Running migrations ==="
 php artisan migrate --force || echo "Migration failed - continuing anyway"
@@ -45,4 +60,4 @@ touch storage/logs/laravel.log
 tail -f storage/logs/laravel.log &
 
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
-php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080} 2>&1
