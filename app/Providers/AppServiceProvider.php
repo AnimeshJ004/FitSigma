@@ -18,8 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if (DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
-            DB::connection()->getPdo()->sqliteCreateFunction('MONTH', function ($date) {
+        try {
+            if (config('database.default') === 'sqlite' && DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
+                DB::connection()->getPdo()->sqliteCreateFunction('MONTH', function ($date) {
                 return date('m', strtotime($date));
             }, 1);
             DB::connection()->getPdo()->sqliteCreateFunction('YEAR', function ($date) {
@@ -43,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
                 $phpFormat = str_replace(array_keys($replacements), array_values($replacements), $format);
                 return date($phpFormat, strtotime($date));
             }, 2);
+            }
+        } catch (\Exception $e) {
+            // Ignore database connection errors during build/optimization
         }
         Validator::extend('alpha_spaces_num', function($attribute, $value)
         {
