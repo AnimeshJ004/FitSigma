@@ -25,25 +25,25 @@ class MerchantTableSeeder extends Seeder
     public function run()
     {
         Merchant::create([
-            'username' => 'admin',
-            'password' => \Illuminate\Support\Facades\Hash::make('123456'),
+            'username' => 'test@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('test123'),
             'first_name' => 'Admin',
             'mobile' => '100',
-            'email' => 'admin@froiden.com',
+            'email' => 'test@gmail.com',
             'is_admin' => 1,
         ]);
 
         Common::create([
-            'title' => 'Froiden',
-            'address' => 'Malviya Nagar',
-            'owner_incharge_name' => 'admin',
+            'title' => 'Fitsigma',
+            'address' => 'Local Gym Address',
+            'owner_incharge_name' => 'Admin',
             'phone' => '100',
-            'email' => 'admin@froiden.com',
+            'email' => 'test@gmail.com',
 
         ]);
 
-        $merchant = Merchant::where('email','=','admin@froiden.com')->first();
-        $detail = Common::where('email','=','admin@froiden.com')->first();
+        $merchant = Merchant::where('email','=','test@gmail.com')->first();
+        $detail = Common::where('email','=','test@gmail.com')->first();
         $category = Category::first();
         $currency = Currency::where('acronym', '=', 'USD')->first();
         $permissions = GymMerchantPermission::all();
