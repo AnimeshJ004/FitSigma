@@ -23,7 +23,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
 # Fix PHP 7.4 join() deprecation in eloquent-sluggable
-RUN sed -i "s/join(\$sourceStrings, ' ')/join(' ', \$sourceStrings)/g" vendor/cviebrock/eloquent-sluggable/src/Services/SlugService.php
+RUN sed -i 's/return join($sourceStrings.*/return join(" ", $sourceStrings);/g' vendor/cviebrock/eloquent-sluggable/src/Services/SlugService.php
 
 # Create required Laravel directories
 RUN mkdir -p storage/framework/sessions \
