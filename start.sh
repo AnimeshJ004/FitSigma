@@ -40,10 +40,26 @@ if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     chmod 777 "${DB_DATABASE:-/var/www/html/database/database.sqlite}"
 fi
 
+# Force clear ALL caches
+echo "=== Clearing all caches ==="
 php artisan config:clear
 php artisan cache:clear
 php artisan route:clear
 php artisan view:clear
+
+# Remove all cached views manually to ensure they regenerate
+rm -rf storage/framework/views/*
+rm -rf storage/framework/cache/*
+rm -rf storage/framework/sessions/*
+rm -rf bootstrap/cache/*
+
+# Recreate cache folders
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache/data
+mkdir -p storage/framework/sessions
+mkdir -p bootstrap/cache
+
+echo "=== Cache cleared successfully ==="
 
 if ! grep -q '^APP_KEY=base64:' /var/www/html/.env; then
     php artisan key:generate --force
