@@ -79,7 +79,7 @@ touch storage/logs/laravel.log
 tail -f storage/logs/laravel.log &
 
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
-php -S 0.0.0.0:${PORT:-8080} -t public
+php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
 EOF
 
 RUN chmod +x /start.sh
