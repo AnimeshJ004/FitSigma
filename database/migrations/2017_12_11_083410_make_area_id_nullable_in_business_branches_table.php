@@ -13,7 +13,7 @@ class MakeAreaIdNullableInBusinessBranchesTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `area_id` `area_id` INT(10) UNSIGNED NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `area_id` `area_id` INT(10) UNSIGNED NULL;');
     }
 
     /**

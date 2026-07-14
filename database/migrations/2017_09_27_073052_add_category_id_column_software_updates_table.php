@@ -15,6 +15,7 @@ class AddCategoryIdColumnSoftwareUpdatesTable extends Migration
     {
         Schema::table('software_updates', function (Blueprint $table) {
             $table->unsignedInteger('category_id')
+                ->nullable()
                 ->after('id');
             $table->foreign('category_id')
                 ->references('id')

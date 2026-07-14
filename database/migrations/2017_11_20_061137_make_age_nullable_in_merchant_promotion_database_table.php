@@ -13,7 +13,7 @@ class MakeAgeNullableInMerchantPromotionDatabaseTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `merchant_promotion_database` CHANGE `age` `age` INT(11) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `merchant_promotion_database` CHANGE `age` `age` INT(11) NULL;');
     }
 
     /**

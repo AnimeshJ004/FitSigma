@@ -14,8 +14,7 @@ class AddStatusColumnGymMembershipsTable extends Migration
     public function up()
     {
         Schema::table('gym_memberships', function (Blueprint $table) {
-            $table->enum('status', ['active', 'inactive'])
-                ->after('business_category_id');
+            $table->string('status')->default('active');
         });
     }
 

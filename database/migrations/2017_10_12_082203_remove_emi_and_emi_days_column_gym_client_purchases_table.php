@@ -13,8 +13,8 @@ class RemoveEmiAndEmiDaysColumnGymClientPurchasesTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_client_purchases` DROP `emi`;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_client_purchases` DROP `emi_days`;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_client_purchases` DROP `emi`;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_client_purchases` DROP `emi_days`;');
     }
 
     /**

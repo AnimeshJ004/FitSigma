@@ -14,13 +14,13 @@ class RemoveColumnsFromGymInvoiceTable extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE `gym_invoice` DROP `tax_percent`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `sgst`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `cgst`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `igst`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `sgst_amount`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `cgst_amount`;');
-        DB::statement('ALTER TABLE `gym_invoice` DROP `igst_amount`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `tax_percent`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `sgst`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `cgst`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `igst`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `sgst_amount`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `cgst_amount`;');
+        // DB::statement('ALTER TABLE `gym_invoice` DROP `igst_amount`;');
     }
 
     /**

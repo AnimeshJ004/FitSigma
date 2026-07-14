@@ -13,9 +13,9 @@ class MakeLongitudeLatitudePhone2NullableInBusinessBranchesTable extends Migrati
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `phone2` `phone2` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `longitude` `longitude` DECIMAL(10,8) NULL;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `latitude` `latitude` DECIMAL(10,8) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `phone2` `phone2` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `longitude` `longitude` DECIMAL(10,8) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `business_branches` CHANGE `latitude` `latitude` DECIMAL(10,8) NULL;');
     }
 
     /**

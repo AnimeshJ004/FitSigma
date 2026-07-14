@@ -13,7 +13,7 @@ class RemoveAgeColumnFromGymClientsTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` DROP `age`;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` DROP `age`;');
     }
 
     /**

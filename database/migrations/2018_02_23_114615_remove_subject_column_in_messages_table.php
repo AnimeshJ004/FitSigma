@@ -14,7 +14,7 @@ class RemoveSubjectColumnInMessagesTable extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE `messages` DROP `subject`');
+        // DB::statement('ALTER TABLE `messages` DROP `subject`');
     }
 
     /**

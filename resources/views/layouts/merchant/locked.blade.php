@@ -57,7 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('ace/images/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('ace/images/favicon/favicon-96x96.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('ace/images/favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('ace/images/favicon//manifest.json') }}">
+
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('ace/images/favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
@@ -88,7 +88,7 @@ License: You must have a valid license purchased only from themeforest(the above
 {!! HTML::script('admin/global/plugins/backstretch/jquery.backstretch.min.js') !!}
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
-{!! HTML::script('admin/global/scripts/app.min.js') !!}
+{!! HTML::script('admin/global/scripts/app.js') !!}
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- END PAGE LEVEL SCRIPTS -->

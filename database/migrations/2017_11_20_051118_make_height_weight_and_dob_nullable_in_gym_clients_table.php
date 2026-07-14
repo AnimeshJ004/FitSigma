@@ -13,10 +13,10 @@ class MakeHeightWeightAndDobNullableInGymClientsTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `dob` `dob` DATE NULL;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `height_feet` `height_feet` TINYINT(4) NULL;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `height_inches` `height_inches` TINYINT(4) NULL;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `weight` `weight` DOUBLE(8,2) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `dob` `dob` DATE NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `height_feet` `height_feet` TINYINT(4) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `height_inches` `height_inches` TINYINT(4) NULL;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_clients` CHANGE `weight` `weight` DOUBLE(8,2) NULL;');
     }
 
     /**

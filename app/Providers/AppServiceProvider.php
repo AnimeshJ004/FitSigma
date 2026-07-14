@@ -6,8 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
-
+use Illuminate\Support\Facades\DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +18,32 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
+        if (DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
+            DB::connection()->getPdo()->sqliteCreateFunction('MONTH', function ($date) {
+                return date('m', strtotime($date));
+            }, 1);
+            DB::connection()->getPdo()->sqliteCreateFunction('YEAR', function ($date) {
+                return date('Y', strtotime($date));
+            }, 1);
+            DB::connection()->getPdo()->sqliteCreateFunction('DAY', function ($date) {
+                return date('d', strtotime($date));
+            }, 1);
+            DB::connection()->getPdo()->sqliteCreateFunction('DATE', function ($date) {
+                return date('Y-m-d', strtotime($date));
+            }, 1);
+            DB::connection()->getPdo()->sqliteCreateFunction('MONTHNAME', function ($date) {
+                return date('F', strtotime($date));
+            }, 1);
+            DB::connection()->getPdo()->sqliteCreateFunction('DATE_FORMAT', function ($date, $format) {
+                $replacements = [
+                    '%d' => 'd', '%m' => 'm', '%M' => 'F', '%b' => 'M',
+                    '%y' => 'y', '%Y' => 'Y', '%h' => 'h', '%H' => 'H',
+                    '%i' => 'i', '%s' => 's', '%a' => 'A', '%p' => 'A'
+                ];
+                $phpFormat = str_replace(array_keys($replacements), array_values($replacements), $format);
+                return date($phpFormat, strtotime($date));
+            }, 2);
+        }
         Validator::extend('alpha_spaces_num', function($attribute, $value)
         {
             return preg_match('/(^[A-Za-z0-9 ]+$)+/', $value);

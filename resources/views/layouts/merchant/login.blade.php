@@ -34,8 +34,8 @@ License: You must have a valid license purchased only from themeforest(the above
     {!! HTML::style('admin/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') !!}
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    {!! HTML::style('admin/global/plugins/select2/css/select2.min.css') !!}
-    {!! HTML::style('admin/global/plugins/select2/css/select2-bootstrap.min.css') !!}
+    {!! HTML::style('admin/global/plugins/select2/select2.min.css') !!}
+    {!! HTML::style('admin/global/plugins/select2/select2-bootstrap.min.css') !!}
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     {!! HTML::style('admin/global/css/components-md.min.css') !!}
@@ -60,7 +60,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('ace/images/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('ace/images/favicon/favicon-96x96.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('ace/images/favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('ace/images/favicon//manifest.json') }}">
+
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('ace/images/favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
@@ -102,7 +102,7 @@ License: You must have a valid license purchased only from themeforest(the above
 {!! HTML::script('admin/global/plugins/jquery.min.js') !!}
 {!! HTML::script('admin/global/plugins/bootstrap/js/bootstrap.min.js') !!}
 {!! HTML::script('admin/global/plugins/js.cookie.min.js') !!}
-{!! HTML::script('admin/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') !!}
+
 {!! HTML::script('admin/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') !!}
 {!! HTML::script('admin/global/plugins/jquery.blockui.min.js') !!}
 {!! HTML::script('admin/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') !!}
@@ -110,11 +110,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 {!! HTML::script('admin/global/plugins/jquery-validation/js/jquery.validate.min.js') !!}
 {!! HTML::script('admin/global/plugins/jquery-validation/js/additional-methods.min.js') !!}
-{!! HTML::script('admin/global/plugins/select2/js/select2.full.min.js') !!}
+{!! HTML::script('admin/global/plugins/select2/select2.full.min.js') !!}
 {!! HTML::script('admin/global/plugins/backstretch/jquery.backstretch.min.js') !!}
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
-{!! HTML::script('admin/global/scripts/app.min.js') !!}
+{!! HTML::script('admin/global/scripts/app.js') !!}
 {!! HTML::script("admin/global/plugins/froiden-helper/helper.js") !!}
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->

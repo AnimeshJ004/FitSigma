@@ -13,8 +13,8 @@ class AddFrontImageToGymSettingsTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_settings` DROP `address`;');
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_settings` DROP `mobile`;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_settings` DROP `address`;');
+        // \Illuminate\Support\Facades\DB::statement('ALTER TABLE `gym_settings` DROP `mobile`;');
         Schema::table('gym_settings', function (Blueprint $table) {
             $table->string('front_image')
                 ->after('image')
